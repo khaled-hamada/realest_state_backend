@@ -35,7 +35,8 @@ urlpatterns = [
 
     ## our apps 
     path('api/accounts/', include('accounts.urls')),
-    path('api/accounts/', include('realtors.urls')),
+    path('api/realtors/', include('realtors.urls')),
+    path('api/listings/', include('listings.urls')),
 
 ]+ static(settings.MEDIA_URL , document_root=settings.MEDIA_ROOT ) ## create urls to our media files 
 
