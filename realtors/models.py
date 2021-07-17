@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.utils.timezone  import now
 # Create your models here.
 
 
@@ -10,7 +11,7 @@ class Realtor(models.Model):
     phone = models.CharField(max_length = 100)
     email = models.CharField(max_length = 100)
     top_seller = models.BooleanField(default=False)
-    date_hired = models.DateTimeField(default=datetime.now , blank=True)
+    date_hired = models.DateTimeField(default=now , blank=True)
 
 
     def __str__(self):

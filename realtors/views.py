@@ -14,7 +14,6 @@ class RealtorsListView(ListAPIView):
 
 ## view specific realtor data 
 # in this view we need to be authenticated so we will not all any permissions 
-
 class RealtorView(RetrieveAPIView):
     queryset = Realtor.objects.all()
     serializer_class = RealtorSerialzer

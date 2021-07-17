@@ -8,6 +8,13 @@ from rest_framework import permissions
 
 
 class SignupView(APIView):
+    """  thid class view used to create users first time they visit our website
+        in order to do so, we allow all people to reach this view so that they can
+        signup bu setting permissions to allow any
+
+        after that we validate both email to be unique and passward to be 6 chars at least 
+        in case of any validation we return an error response to the requested page 
+     """
     permission_classes = (permissions.AllowAny, )
 
     ## def get , post ... methods that will come from your api 
