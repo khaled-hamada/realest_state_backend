@@ -18,6 +18,9 @@ class ListingDetailSerializer(ModelSerializer):
   
     class  Meta:
         model = Listing
-        fields = ('__all__', ' listing_photos')
+        fields = ('realtor','title', 'address','city','state','price','sale_type',
+                'home_type','bedrooms','bathrooms','sqft','photo_main','slug','listing_photos',
+                'description', 'zipcode','list_date')
+
         lookup_field='slug' ## will be used for search and as a parameter to the mapping url
         

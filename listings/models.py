@@ -54,6 +54,6 @@ class ListingPhoto(models.Model):
 
     @property
     def photo_url(self):
-        return "{0}".format(self.photo.url)
+        return "{0}{1}".format('http://127.0.0.1:8000' ,self.photo.url)
     def __str__(self):
         return "photo of " + str(Listing.title)

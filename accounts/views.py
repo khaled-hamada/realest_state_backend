@@ -3,7 +3,8 @@ User = get_user_model()  ## this how to get the user when creating a custom user
 
 from rest_framework.response import Response
 from rest_framework.views import APIView ## generic class based view 
-from rest_framework import permissions
+from rest_framework import permissions, status
+
 # from django.views.decorators.csrf import csrf_exempt
 
 
@@ -20,8 +21,10 @@ class SignupView(APIView):
     ## def get , post ... methods that will come from your api 
     def post(self, request, format=None):
         data = self.request.data
-        name = data['name']
-        email = data['email']
+        # print(request.data)
+        # print(data)
+        name = data['name'].strip()
+        email = data['email'].strip()
         password = data['password']
         password2 = data['password2']
 
@@ -29,15 +32,19 @@ class SignupView(APIView):
         ## i will also validate form data in the frontend  using validator lib 
             if User.objects.filter(email = email).exists():
                 ##error duplicate email 
-                return Response({"error": "Email already exists"})
+                print("error  email duplicate")
+                return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 ##if pass < 6 
                 if len(password) < 6:
-                    return Response({"error": "Password is very weak , length must be at least six chars"})
+                    return Response({"error": "Password is very weak , length must be at least six chars"},
+                                    status=status.HTTP_406_NOT_ACCEPTABLE)
                 else:
                     user = User.objects.create_user(email = email , name= name ,password = password )
                     user.save()
-                    return Response({"success": "User created successfully"})
+                    return Response({"success": "User created successfully"},
+                    status=status.HTTP_200_OK)
                 
         else :
-            return Response({"error":"password does not match"})
+            return Response({"error":"password does not match"},
+                            status=status.HTTP_400_BAD_REQUEST)

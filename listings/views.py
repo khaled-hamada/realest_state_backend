@@ -6,7 +6,7 @@ from .models import Listing
 from .serializers import ListingSerializer, ListingDetailSerializer
 from datetime import datetime, timezone, timedelta
 import re
-
+from rest_framework.parsers import JSONParser
 class ListingsView(ListAPIView):
     queryset = Listing.objects.filter(is_published = True).order_by('-list_date')
     permission_classes = (permissions.AllowAny, )
@@ -24,9 +24,11 @@ class ListingDetailView(RetrieveAPIView):
 class SearchView(APIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = ListingSerializer
+    # parser_classes = [JSONParser]
 
     def post(self, request , format = None):
         data = request.data
+        print(data)
         queryset = Listing.objects.filter( is_published=True).order_by('-list_date')
         
         sale_type = data['sale_type']
@@ -103,12 +105,14 @@ class SearchView(APIView):
                 slug = query.slug
                 queryset = queryset.exclude(slug__iexact=slug)
 
-        open_house = data['open_house']
-        queryset = queryset.filter(open_house = open_house)
+        open_house = str(data['open_house'])
+        # print(f"open_house is {open_house}")
+        # open_house = True if open_house == 'true' else  False
+        queryset = queryset.filter(open_house__iexact = open_house)
 
         keywords = data['keywords']
         queryset = queryset.filter(description__icontains = keywords)
 
-        serializer = ListingSerializer(queryset, many=True)
+        serializer = ListingDetailSerializer(queryset, many=True)
 
         return Response(serializer.data)
